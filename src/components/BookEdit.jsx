@@ -1,27 +1,23 @@
-import { ArrowPathIcon, XMarkIcon } from '@heroicons/react/24/solid'
+import { ArrowPathIcon } from '@heroicons/react/24/solid'
 
 import useForm from '../hooks/useForm'
 
-function BookEdit({ book, onEdit, toggle }) {
+function BookEdit({ book, onSubmit }) {
   const { fields, handleChange } = useForm(book)
 
-  const handleSubmit = e => {
+  const handleFormSubmit = e => {
     e.preventDefault()
 
-    // update record
-    onEdit({
+    onSubmit({
       ...fields,
       ...(fields.thumbnail === '' && {
         thumbnail: 'https://placehold.co/100x150',
       }),
     })
-
-    // close form
-    toggle()
   }
 
   return (
-    <form className="flex flex-col gap-y-6 w-full" onSubmit={handleSubmit}>
+    <form className="flex flex-col gap-y-6 w-full" onSubmit={handleFormSubmit}>
       <div>
         <label
           htmlFor="title"
@@ -107,14 +103,6 @@ function BookEdit({ book, onEdit, toggle }) {
         >
           <ArrowPathIcon className="w-4 h-4 mr-1" />
           <span>Update</span>
-        </button>
-        <button
-          type="button"
-          onClick={toggle}
-          className="flex items-center rounded-md bg-pink-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-pink-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600"
-        >
-          <XMarkIcon className="w-4 h-4 mr-1" />
-          <span>Cancel</span>
         </button>
       </div>
     </form>

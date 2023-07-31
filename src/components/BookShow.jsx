@@ -6,12 +6,20 @@ function BookShow({ book, onDelete, onEdit }) {
   const { id, author, description, thumbnail, title } = book
   const [displayEditForm, setEditForm] = useState(false)
 
+  const handleSubmit = book => {
+    // update record
+    onEdit(book)
+
+    // close form
+    toggleForm()
+  }
+
   const toggleForm = () => setEditForm(prevState => !prevState)
 
   return (
     <>
       {displayEditForm ? (
-        <BookEdit book={book} onEdit={onEdit} toggle={toggleForm} />
+        <BookEdit book={book} onSubmit={handleSubmit} />
       ) : (
         <>
           {/* book details */}
