@@ -2,14 +2,14 @@ import { ArrowPathIcon, XMarkIcon } from '@heroicons/react/24/solid'
 
 import useForm from '../hooks/useForm'
 
-function BookEdit({ book, onCancel, onUpdate }) {
+function BookEdit({ book, onEdit, toggle }) {
   const { fields, handleChange } = useForm(book)
 
   const handleSubmit = e => {
     e.preventDefault()
 
     // update record
-    onUpdate({
+    onEdit({
       ...fields,
       ...(fields.thumbnail === '' && {
         thumbnail: 'https://placehold.co/100x150',
@@ -17,7 +17,7 @@ function BookEdit({ book, onCancel, onUpdate }) {
     })
 
     // close form
-    onCancel()
+    toggle()
   }
 
   return (
@@ -110,7 +110,7 @@ function BookEdit({ book, onCancel, onUpdate }) {
         </button>
         <button
           type="button"
-          onClick={onCancel}
+          onClick={toggle}
           className="flex items-center rounded-md bg-pink-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-pink-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600"
         >
           <XMarkIcon className="w-4 h-4 mr-1" />

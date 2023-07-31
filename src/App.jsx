@@ -40,15 +40,15 @@ function App() {
     setDisplayForm(false)
   }
 
-  const deleteBook = id =>
+  const deleteBookById = id =>
     setBooks(prevState => prevState.filter(book => book.id !== id))
 
-  const toggleForm = () => setDisplayForm(prevState => !prevState)
-
-  const updateBook = updatedBook =>
+  const editBook = updatedBook =>
     setBooks(prevState =>
       prevState.map(book => (book.id === updatedBook.id ? updatedBook : book))
     )
+
+  const toggleForm = () => setDisplayForm(prevState => !prevState)
 
   return (
     <div className="mx-auto max-w-7xl px-4 my-6 sm:px-6 lg:px-8">
@@ -74,7 +74,7 @@ function App() {
             </div>
           </div>
         </li>
-        <BookList books={books} onDelete={deleteBook} onUpdate={updateBook} />
+        <BookList books={books} onDelete={deleteBookById} onEdit={editBook} />
       </ul>
 
       <BookCreate

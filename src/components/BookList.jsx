@@ -1,6 +1,6 @@
 import BookShow from './BookShow'
 
-function BookList({ books, onDelete, onUpdate }) {
+function BookList({ books, onDelete, onEdit }) {
   return (
     <>
       {books.length > 0 ? (
@@ -9,7 +9,7 @@ function BookList({ books, onDelete, onUpdate }) {
             key={book.id}
             className="relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-50 sm:px-6"
           >
-            <BookShow book={book} onDelete={onDelete} onUpdate={onUpdate} />
+            <BookShow book={book} onDelete={onDelete} onEdit={onEdit} />
           </li>
         ))
       ) : (

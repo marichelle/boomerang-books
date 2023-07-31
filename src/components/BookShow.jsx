@@ -2,18 +2,19 @@ import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid'
 import { useState } from 'react'
 import BookEdit from './BookEdit'
 
-function BookShow({ book, onDelete, onUpdate }) {
+function BookShow({ book, onDelete, onEdit }) {
   const { id, author, description, thumbnail, title } = book
-  const [displayEditForm, toggleEditForm] = useState(false)
+  const [displayEditForm, setEditForm] = useState(false)
 
-  const toggleForm = () => toggleEditForm(prevState => !prevState)
+  const toggleForm = () => setEditForm(prevState => !prevState)
 
   return (
     <>
       {displayEditForm ? (
-        <BookEdit book={book} onCancel={toggleForm} onUpdate={onUpdate} />
+        <BookEdit book={book} onEdit={onEdit} toggle={toggleForm} />
       ) : (
         <>
+          {/* book details */}
           <div className="flex gap-x-4">
             <img
               className="w-24 flex-none bg-gray-50"
@@ -28,9 +29,13 @@ function BookShow({ book, onDelete, onUpdate }) {
               <p className="mt-1 flex text-xs leading-5 text-gray-500">
                 {author}
               </p>
-              <p className="mt-4 flex text-xs text-gray-900">{description}</p>
+              <p className="mt-4 flex text-xs text-gray-900 max-w-xl">
+                {description}
+              </p>
             </div>
           </div>
+
+          {/* action buttons */}
           <div className="flex items-center gap-x-4">
             <div className="hidden sm:flex sm:flex-col sm:items-end">
               <button
