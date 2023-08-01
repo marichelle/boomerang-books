@@ -5,15 +5,21 @@ import { useBooksContext } from '../contexts/BooksContext'
 
 function BookShow({ book }) {
   const { id, author, description, thumbnail, title } = book
-  const { removeBook } = useBooksContext()
+  const { editBook, removeBook } = useBooksContext()
   const [displayEditForm, setEditForm] = useState(false)
+
+  const handleSubmit = (e, book) => {
+    e.preventDefault()
+    editBook(book)
+    toggleForm()
+  }
 
   const toggleForm = () => setEditForm(prevState => !prevState)
 
   return (
     <>
       {displayEditForm ? (
-        <BookEdit book={book} toggle={toggleForm} />
+        <BookEdit book={book} onSubmit={handleSubmit} />
       ) : (
         <>
           {/* book details */}
