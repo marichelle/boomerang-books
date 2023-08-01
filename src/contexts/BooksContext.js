@@ -23,18 +23,18 @@ const BooksContextProvider = ({ children }) => {
     )
   }
 
+  const getBooks = async () => {
+    const response = await axios.get(`${API_SERVER_HOST}/books`)
+    setBooks(response.data)
+  }
+
   const removeBook = async id => {
     await axios.delete(`${API_SERVER_HOST}/books/${id}`)
     setBooks(prevState => prevState.filter(book => book.id !== id))
   }
 
   useEffect(() => {
-    const init = async () => {
-      const response = await axios.get(`${API_SERVER_HOST}/books`)
-      setBooks(response.data)
-    }
-
-    init()
+    getBooks()
   }, [])
 
   return (
