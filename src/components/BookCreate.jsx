@@ -12,7 +12,6 @@ function BookCreate({ open, onCreate, toggle }) {
     e.preventDefault()
 
     onCreate({
-      id: new Date().toISOString(),
       ...fields,
       ...(fields.thumbnail === '' && {
         thumbnail: 'https://placehold.co/100x150',
@@ -29,7 +28,7 @@ function BookCreate({ open, onCreate, toggle }) {
       }`}
     >
       <form
-        className="flex flex-col gap-y-6 mx-auto max-w-7xl"
+        className="flex flex-col mx-auto gap-y-6 max-w-7xl"
         onSubmit={handleSubmit}
       >
         <div>

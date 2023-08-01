@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { PlusIcon } from '@heroicons/react/24/solid'
 
 import BookCreate from './components/BookCreate'
 import BookList from './components/BookList'
+import { addBook, deleteBook, fetchBooks, updateBook } from './lib/books'
 
 /* const initialBooks = [
   {
@@ -35,36 +36,51 @@ function App() {
   const [books, setBooks] = useState([])
   const [displayForm, setDisplayForm] = useState(false)
 
-  const createBook = book => {
-    setBooks(prevState => [...prevState, book])
+  const createBook = async book => {
+    const response = await addBook(book)
+    setBooks(prevState => [...prevState, response.data])
     setDisplayForm(false)
   }
 
-  const deleteBookById = id =>
+  const deleteBookById = async id => {
+    await deleteBook(id)
     setBooks(prevState => prevState.filter(book => book.id !== id))
+  }
 
-  const editBook = updatedBook =>
+  const editBook = async updatedBook => {
+    const response = await updateBook(updatedBook)
+
     setBooks(prevState =>
-      prevState.map(book => (book.id === updatedBook.id ? updatedBook : book))
+      prevState.map(book => (book.id === updatedBook.id ? response.data : book))
     )
+  }
 
   const toggleForm = () => setDisplayForm(prevState => !prevState)
 
+  useEffect(() => {
+    const init = async () => {
+      const response = await fetchBooks()
+      setBooks(response.data)
+    }
+
+    init()
+  }, [])
+
   return (
-    <div className="mx-auto max-w-7xl px-4 my-6 sm:px-6 lg:px-8">
-      <ul className="divide-y divide-gray-100 overflow-hidden bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl">
+    <div className="px-4 mx-auto my-6 max-w-7xl sm:px-6 lg:px-8">
+      <ul className="overflow-hidden bg-white divide-y divide-gray-100 shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl">
         <li>
-          <div className="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
-            <div className="-ml-4 -mt-2 flex flex-wrap items-center justify-between sm:flex-nowrap">
-              <div className="ml-4 mt-2">
+          <div className="px-4 py-5 bg-white border-b border-gray-200 sm:px-6">
+            <div className="flex flex-wrap items-center justify-between -mt-2 -ml-4 sm:flex-nowrap">
+              <div className="mt-2 ml-4">
                 <h3 className="text-base font-semibold leading-6 text-gray-900">
                   My Reading List
                 </h3>
               </div>
-              <div className="ml-4 mt-2 flex-shrink-0">
+              <div className="flex-shrink-0 mt-2 ml-4">
                 <button
                   type="button"
-                  className="relative inline-flex items-center rounded-md bg-pink-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-pink-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600"
+                  className="relative inline-flex items-center px-3 py-2 text-sm font-semibold text-white bg-pink-600 rounded-md shadow-sm hover:bg-pink-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600"
                   onClick={toggleForm}
                 >
                   <PlusIcon className="w-5 h-4" />
