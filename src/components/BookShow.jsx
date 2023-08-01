@@ -1,43 +1,37 @@
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/solid'
 import { useState } from 'react'
 import BookEdit from './BookEdit'
+import { useBooksContext } from '../contexts/BooksContext'
 
-function BookShow({ book, onDelete, onEdit }) {
+function BookShow({ book }) {
   const { id, author, description, thumbnail, title } = book
+  const { removeBook } = useBooksContext()
   const [displayEditForm, setEditForm] = useState(false)
-
-  const handleSubmit = book => {
-    // update record
-    onEdit(book)
-
-    // close form
-    toggleForm()
-  }
 
   const toggleForm = () => setEditForm(prevState => !prevState)
 
   return (
     <>
       {displayEditForm ? (
-        <BookEdit book={book} onSubmit={handleSubmit} />
+        <BookEdit book={book} toggle={toggleForm} />
       ) : (
         <>
           {/* book details */}
           <div className="flex gap-x-4">
             <img
-              className="w-24 flex-none bg-gray-50"
+              className="flex-none w-24 bg-gray-50"
               src={thumbnail}
               alt={title}
             />
-            <div className="min-w-0 flex-auto">
+            <div className="flex-auto min-w-0">
               <p className="text-sm font-semibold leading-6 text-gray-900">
-                <span className="absolute inset-x-0 -top-px bottom-0" />
+                <span className="absolute inset-x-0 bottom-0 -top-px" />
                 {title}
               </p>
-              <p className="mt-1 flex text-xs leading-5 text-gray-500">
+              <p className="flex mt-1 text-xs leading-5 text-gray-500">
                 {author}
               </p>
-              <p className="mt-4 flex text-xs text-gray-900 max-w-xl">
+              <p className="flex max-w-xl mt-4 text-xs text-gray-900">
                 {description}
               </p>
             </div>
@@ -47,18 +41,18 @@ function BookShow({ book, onDelete, onEdit }) {
           <div className="flex items-center gap-x-4">
             <div className="hidden sm:flex sm:flex-col sm:items-end">
               <button
-                className="flex items-center text-xs text-gray-900 leading-6 uppercase z-10 hover:text-pink-600"
+                className="z-10 flex items-center text-xs leading-6 text-gray-900 uppercase hover:text-pink-600"
                 onClick={toggleForm}
               >
                 <span>Update</span>
-                <PencilSquareIcon className="h-4 w-4 ml-2" />
+                <PencilSquareIcon className="w-4 h-4 ml-2" />
               </button>
               <button
-                className="flex items-center text-xs text-gray-900 leading-6 uppercase z-10 hover:text-pink-600"
-                onClick={() => onDelete(id)}
+                className="z-10 flex items-center text-xs leading-6 text-gray-900 uppercase hover:text-pink-600"
+                onClick={() => removeBook(id)}
               >
                 <span>Delete</span>
-                <TrashIcon className="h-4 w-4 ml-2" />
+                <TrashIcon className="w-4 h-4 ml-2" />
               </button>
             </div>
           </div>

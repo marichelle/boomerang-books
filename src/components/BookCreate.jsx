@@ -1,6 +1,8 @@
+import { useBooksContext } from '../contexts/BooksContext'
 import useForm from '../hooks/useForm'
 
-function BookCreate({ open, onCreate, toggle }) {
+function BookCreate({ open, toggle }) {
+  const { addBook } = useBooksContext()
   const { fields, handleChange, handleReset } = useForm({
     title: '',
     author: '',
@@ -11,14 +13,14 @@ function BookCreate({ open, onCreate, toggle }) {
   const handleSubmit = e => {
     e.preventDefault()
 
-    onCreate({
+    addBook({
       ...fields,
       ...(fields.thumbnail === '' && {
         thumbnail: 'https://placehold.co/100x150',
       }),
     })
-
     handleReset()
+    toggle()
   }
 
   return (

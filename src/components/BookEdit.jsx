@@ -1,23 +1,27 @@
 import { ArrowPathIcon } from '@heroicons/react/24/solid'
 
+import { useBooksContext } from '../contexts/BooksContext'
 import useForm from '../hooks/useForm'
 
-function BookEdit({ book, onSubmit }) {
+function BookEdit({ book, toggle }) {
+  const { editBook } = useBooksContext()
   const { fields, handleChange } = useForm(book)
 
-  const handleFormSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault()
 
-    onSubmit({
+    editBook({
       ...fields,
       ...(fields.thumbnail === '' && {
         thumbnail: 'https://placehold.co/100x150',
       }),
     })
+
+    toggle()
   }
 
   return (
-    <form className="flex flex-col gap-y-6 w-full" onSubmit={handleFormSubmit}>
+    <form className="flex flex-col w-full gap-y-6" onSubmit={handleSubmit}>
       <div>
         <label
           htmlFor="title"

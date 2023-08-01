@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { PlusIcon } from '@heroicons/react/24/solid'
 
 import BookCreate from './components/BookCreate'
 import BookList from './components/BookList'
-import { addBook, deleteBook, fetchBooks, updateBook } from './lib/books'
 
 /* const initialBooks = [
   {
@@ -33,38 +32,8 @@ import { addBook, deleteBook, fetchBooks, updateBook } from './lib/books'
 ] */
 
 function App() {
-  const [books, setBooks] = useState([])
   const [displayForm, setDisplayForm] = useState(false)
-
-  const createBook = async book => {
-    const response = await addBook(book)
-    setBooks(prevState => [...prevState, response.data])
-    setDisplayForm(false)
-  }
-
-  const deleteBookById = async id => {
-    await deleteBook(id)
-    setBooks(prevState => prevState.filter(book => book.id !== id))
-  }
-
-  const editBook = async updatedBook => {
-    const response = await updateBook(updatedBook)
-
-    setBooks(prevState =>
-      prevState.map(book => (book.id === updatedBook.id ? response.data : book))
-    )
-  }
-
   const toggleForm = () => setDisplayForm(prevState => !prevState)
-
-  useEffect(() => {
-    const init = async () => {
-      const response = await fetchBooks()
-      setBooks(response.data)
-    }
-
-    init()
-  }, [])
 
   return (
     <div className="px-4 mx-auto my-6 max-w-7xl sm:px-6 lg:px-8">
@@ -90,14 +59,10 @@ function App() {
             </div>
           </div>
         </li>
-        <BookList books={books} onDelete={deleteBookById} onEdit={editBook} />
+        <BookList />
       </ul>
 
-      <BookCreate
-        open={displayForm}
-        onCreate={createBook}
-        toggle={toggleForm}
-      />
+      <BookCreate open={displayForm} toggle={toggleForm} />
     </div>
   )
 }
